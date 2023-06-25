@@ -11,7 +11,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Body from "./components/Body";
-
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import About from "./components/About"
+import Contact from "./components/Contact";
+import Error from "./components/Error";
+import RestaurentMenu from "./components/RestaurantMenu";
   //React Element
   // const heading =React.createElement("h1",{id:"heading"},"namaste react");
   // const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -20,15 +24,44 @@ import Body from "./components/Body";
   // const Title=()=>(
   //   <div className="title"><h2> Hello From title component</h2></div>
   // )
-  
+
   const AppLayout = () =>{
     return (
       <div className="app">
               <Header></Header>
-              <Body/>
+             <Outlet></Outlet>
       </div>
     )
   }
+
+  const appRouter = createBrowserRouter([
+    {
+      path: "/",
+      element: <AppLayout/>,
+      children:[
+        {
+          path:"/",
+          element:<Body/>
+        },
+        {
+          path:"/about",
+          element:<About/>
+        },
+        {
+          path:"/contact",
+          element:<Contact/>
+        },
+        {
+          path:"/restaurants/:resId",
+          element:<RestaurentMenu/>
+        }
+
+      ],
+      errorElement:<Error/>
+    },
+    
+  ])
   const root = ReactDOM.createRoot(document.getElementById("root"));
   
-  root.render(<AppLayout />)
+  root.render(<RouterProvider router={appRouter
+  } />)
